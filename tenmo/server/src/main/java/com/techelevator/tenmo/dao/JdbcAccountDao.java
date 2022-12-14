@@ -1,6 +1,8 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.User;
+import org.springframework.data.annotation.Id;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -37,13 +39,6 @@ public class JdbcAccountDao implements AccountDao {
         return account;
     }
 
-    @Override
-    public boolean create(int userId, BigDecimal balance) {
-//      userid = id (from user)
-        //set balance to 1000
-        //account id will be autocreated based upon user id with the balance of 1000
-        return false;
-    }
 
     private Account mapToRowAccount(SqlRowSet response) {
         Account account = new Account();

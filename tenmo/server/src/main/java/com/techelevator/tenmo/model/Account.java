@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class Account {
     private int accountId;
     private int userId;
-    private BigDecimal balance;
+    private static BigDecimal balance = new BigDecimal(1000);
 
     public Account(int accountId, int userId, BigDecimal balance) {
         this.accountId = accountId;
@@ -32,7 +32,7 @@ public class Account {
         this.userId = userId;
     }
 
-    public BigDecimal getBalance() {
+    public static BigDecimal getBalance() {
         return balance;
     }
 
