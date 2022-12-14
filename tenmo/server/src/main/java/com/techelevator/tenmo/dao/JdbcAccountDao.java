@@ -17,6 +17,10 @@ public class JdbcAccountDao implements AccountDao {
 
     private JdbcTemplate jdbcTemplate;
 
+    public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     @Override
     public List<Account> findAll() {
         List<Account> accounts = new ArrayList<>();
@@ -42,13 +46,25 @@ public class JdbcAccountDao implements AccountDao {
 
     @Override
     public BigDecimal returnBalance(int userId) {
+        BigDecimal balance = BigDecimal.ZERO;
         String sql = "SELECT balance FROM account WHERE user_id = ?";
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, userId);
         if(rowSet.next()){
-            return mapToRowAccount(DecimalFormat.setParseBigDecimal(true));
+            balance = mapToRowAccount(rowSet).getBalance();
         }
         return balance;
     }
+
+//    @Override
+//    public BigDecimal getBalance(int accountId) {
+//        BigDecimal balance = BigDecimal.ZERO;
+//        String sql = "SELECT balance FROM account WHERE account_id = ?";
+//        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, accountId);
+//        if(rowSet.next()){
+//            balance = mapToRowAccount(rowSet).getBalance();
+//        }
+//        return balance;
+//    }
 
 
     private Account mapToRowAccount(SqlRowSet response) {

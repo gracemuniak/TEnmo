@@ -18,6 +18,7 @@ import java.util.List;
 public class JdbcUserDao implements UserDao {
 
     private JdbcTemplate jdbcTemplate;
+    private Account account;
 
     public JdbcUserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -59,6 +60,7 @@ public class JdbcUserDao implements UserDao {
     @Override
     public boolean create(String username, String password) {
 
+
         // create user
         String sql = "INSERT INTO tenmo_user (username, password_hash) VALUES (?, ?) RETURNING user_id";
         String password_hash = new BCryptPasswordEncoder().encode(password);
@@ -71,7 +73,7 @@ public class JdbcUserDao implements UserDao {
         String sqlAccount = "INSERT INTO account (user_id, balance) VALUES (?,?) RETURNING account_id";
         Integer newAccountId;
         try {
-            newAccountId = jdbcTemplate.queryForObject(sqlAccount, Integer.class, newUserId, Account.getBalance());
+            newAccountId = jdbcTemplate.queryForObject(sqlAccount, Integer.class, newUserId, account.getBalance());
         } catch (RestClientResponseException e) {
 
         }
