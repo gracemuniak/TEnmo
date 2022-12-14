@@ -59,6 +59,8 @@ public class AuthenticationController {
         }
     }
 
+    @RequestMapping(value = "/account/balance", method = RequestMethod.POST)
+
 
     /**
      * Object to return as body in JWT Authentication.

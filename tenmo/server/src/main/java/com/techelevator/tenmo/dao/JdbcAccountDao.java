@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,16 @@ public class JdbcAccountDao implements AccountDao {
         return account;
     }
 
+    @Override
+    public BigDecimal returnBalance(int userId) {
+        String sql = "SELECT balance FROM account WHERE user_id = ?";
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, userId);
+        if(rowSet.next()){
+            return mapToRowAccount(DecimalFormat.setParseBigDecimal(true));
+        }
+        return balance;
+    }
+
 
     private Account mapToRowAccount(SqlRowSet response) {
         Account account = new Account();
@@ -47,4 +58,6 @@ public class JdbcAccountDao implements AccountDao {
         account.setBalance(response.getBigDecimal("balance"));
         return account;
     }
+
+
 }
