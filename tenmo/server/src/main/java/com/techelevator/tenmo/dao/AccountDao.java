@@ -13,6 +13,8 @@ public interface AccountDao {
 
     BigDecimal returnBalance(int userId);
 
-//    BigDecimal getBalance(int accountId);
+    BigDecimal getBalance(int accountId);
+
+    int getAccountId(int userId);
 
 }

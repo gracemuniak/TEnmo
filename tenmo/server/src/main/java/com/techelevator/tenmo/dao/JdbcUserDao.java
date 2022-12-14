@@ -18,7 +18,7 @@ import java.util.List;
 public class JdbcUserDao implements UserDao {
 
     private JdbcTemplate jdbcTemplate;
-    private Account account;
+    private Account account = new Account();
 
     public JdbcUserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -75,9 +75,9 @@ public class JdbcUserDao implements UserDao {
         try {
             newAccountId = jdbcTemplate.queryForObject(sqlAccount, Integer.class, newUserId, account.getBalance());
         } catch (RestClientResponseException e) {
-
+            return false;
         }
-        return false;
+        return true;
     }
         private User mapRowToUser (SqlRowSet rs){
             User user = new User();

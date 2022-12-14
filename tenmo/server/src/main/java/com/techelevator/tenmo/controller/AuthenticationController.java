@@ -25,8 +25,7 @@ import java.security.Principal;
 /**
  * Controller to authenticate users.
  */
-@CrossOrigin
-@PreAuthorize("permitAll")
+
 @RestController
 public class AuthenticationController {
 
@@ -64,13 +63,6 @@ public class AuthenticationController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User registration failed.");
         }
     }
-
-    @RequestMapping(value = "/account", method = RequestMethod.GET)
-    public BigDecimal getBalance(Principal principal) {
-        int userId = userDao.findIdByUsername(principal.getName());
-        return accountDao.returnBalance(userId);
-    }
-
 
     /**
      * Object to return as body in JWT Authentication.

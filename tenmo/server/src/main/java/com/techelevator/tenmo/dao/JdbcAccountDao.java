@@ -44,6 +44,14 @@ public class JdbcAccountDao implements AccountDao {
         return account;
     }
 
+    public int getAccountId(int userId){
+        System.out.println("debug: " + userId);
+        int accountId = 0;
+        String sql = "SELECT account_id FROM account WHERE user_id = ?";
+        accountId = jdbcTemplate.queryForObject(sql, Integer.class, userId);
+        return accountId;
+    }
+
     @Override
     public BigDecimal returnBalance(int userId) {
         BigDecimal balance = BigDecimal.ZERO;
@@ -55,16 +63,16 @@ public class JdbcAccountDao implements AccountDao {
         return balance;
     }
 
-//    @Override
-//    public BigDecimal getBalance(int accountId) {
-//        BigDecimal balance = BigDecimal.ZERO;
-//        String sql = "SELECT balance FROM account WHERE account_id = ?";
-//        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, accountId);
-//        if(rowSet.next()){
-//            balance = mapToRowAccount(rowSet).getBalance();
-//        }
-//        return balance;
-//    }
+    @Override
+    public BigDecimal getBalance(int accountId) {
+        BigDecimal balance = BigDecimal.ZERO;
+        String sql = "SELECT * FROM account WHERE account_id = ?";
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, accountId);
+        if(rowSet.next()){
+            balance = mapToRowAccount(rowSet).getBalance();
+        }
+        return balance;
+    }
 
 
     private Account mapToRowAccount(SqlRowSet response) {
