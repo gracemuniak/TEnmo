@@ -23,8 +23,8 @@ public class AccountController {
         this.userDao = userDao;
     }
 
-//    @PreAuthorize("permitAll")
-    @RequestMapping(value = "/account", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/balance", method = RequestMethod.GET)
     public BigDecimal getBalance(Principal principal) {
         int userId = userDao.findIdByUsername(principal.getName());
         int accountId = accountDao.getAccountId(userId);

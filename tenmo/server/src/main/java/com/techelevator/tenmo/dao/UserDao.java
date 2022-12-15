@@ -10,6 +10,8 @@ public interface UserDao {
 
     User findByUsername(String username);
 
+    List<User> findAllRegisteredUsers();
+
     int findIdByUsername(String username);
 
     boolean create(String username, String password);

@@ -10,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientResponseException;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +21,18 @@ public class JdbcUserDao implements UserDao {
 
     public JdbcUserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public List<User> findAllRegisteredUsers() {
+        List<User> registeredUsers = new ArrayList<>();
+        String sql = "SELECT * FROM account WHERE user_id != ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        while (results.next()) {
+            User registeredUser = mapRowToUser(results);
+            registeredUsers.add(registeredUser);
+        }
+        return registeredUsers;
     }
 
     @Override
