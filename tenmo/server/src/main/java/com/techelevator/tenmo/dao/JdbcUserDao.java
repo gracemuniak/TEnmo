@@ -25,14 +25,14 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public List<User> findAllRegisteredUsers() {
-        List<User> registeredUsers = new ArrayList<>();
-        String sql = "SELECT * FROM account WHERE user_id != ?";
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT user_id, username FROM tenmo_user;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while (results.next()) {
-            User registeredUser = mapRowToUser(results);
-            registeredUsers.add(registeredUser);
+            User user = userName(results);
+            users.add(user);
         }
-        return registeredUsers;
+        return users;
     }
 
     @Override
@@ -98,5 +98,12 @@ public class JdbcUserDao implements UserDao {
             user.setActivated(true);
             user.setAuthorities("USER");
             return user;
+        }
+
+        private User userName (SqlRowSet rs){
+        User user = new User();
+        user.setUsername(rs.getString("username"));
+        user.setId(rs.getInt("user_id"));
+        return user;
         }
     }

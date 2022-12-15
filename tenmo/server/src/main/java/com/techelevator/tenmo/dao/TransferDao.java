@@ -13,4 +13,6 @@ public interface TransferDao {
     boolean fundsAvailable(BigDecimal amount, BigDecimal balance);
 
     BigDecimal receiveBalance(BigDecimal amount, int userTo);
+
+    BigDecimal transferFunds();
 }

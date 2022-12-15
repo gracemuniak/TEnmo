@@ -20,6 +20,8 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public int transferFunds(BigDecimal amount, int userFrom, int userTo) {
+        BigDecimal transferAmount = BigDecimal.ZERO;
+        String sql = "INSERT INTO transfer (user_from, user_to, amount, transfer_status) VALUES (?, ?, ?, ?) ";
         return 0;
     }
 
@@ -30,6 +32,13 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public BigDecimal receiveBalance(BigDecimal amount, int userTo) {
+        return null;
+    }
+
+    @Override
+    public BigDecimal transferFunds() {
+        BigDecimal transferAmount = BigDecimal.ZERO;
+        String sql = "INSERT INTO transfer (user_from, user_to, amount, transfer_status) VALUES (?, ?, ?, ?) ";
         return null;
     }
 
