@@ -5,10 +5,9 @@ import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,6 +19,7 @@ public class TransferController {
     private UserDao userDao;
     private TransferDao transferDao;
     private AccountDao accountDao;
+    private Transfer transfer = new Transfer();
 
     public TransferController(UserDao userDao, TransferDao transferDao, AccountDao accountDao) {
         this.userDao = userDao;
@@ -30,9 +30,10 @@ public class TransferController {
     public List<User> findAllRegisteredUsers() {
         return userDao.findAllRegisteredUsers();
     }
+    @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/transfer/amount", method = RequestMethod.POST)
-    public BigDecimal transferFunds() {
-        return transferDao.transferFunds();
+    public boolean createTransfer() {
+        return transferDao.createTransfer();
     }
 
 

@@ -8,7 +8,7 @@ public class Transfer {
     private int userFrom;
     private int userTo;
     private BigDecimal amount;
-    private String transferStatus;
+    private String transferStatus = "Approved";
 
     public Transfer(int transferId, int userFrom, int userTo, BigDecimal amount, String transferStatus) {
         this.transferId = transferId;
