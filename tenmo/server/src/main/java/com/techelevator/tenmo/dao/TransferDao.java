@@ -8,14 +8,12 @@ import java.util.List;
 
 public interface TransferDao {
 
-    Transfer createTransfer(BigDecimal amount, int userFrom, int userTo);
+    Transfer createTransfer(Transfer transfer);
 
-    int transferFunds(BigDecimal amount, int userFrom, int userTo); // userTo
+    Transfer makeNewTransfer(Transfer transfer);
 
     boolean fundsAvailable(BigDecimal amount, BigDecimal balance);
 
     BigDecimal receiveBalance(BigDecimal amount, int userTo);
-
-    BigDecimal transferFunds();
 
 }

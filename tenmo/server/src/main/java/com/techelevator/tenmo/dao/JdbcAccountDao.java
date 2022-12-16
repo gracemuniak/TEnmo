@@ -45,7 +45,6 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     public int getAccountId(int userId){
-        System.out.println("debug: " + userId);
         int accountId = 0;
         String sql = "SELECT account_id FROM account WHERE user_id = ?";
         accountId = jdbcTemplate.queryForObject(sql, Integer.class, userId);

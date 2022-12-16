@@ -2,6 +2,7 @@ package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.User;
+import com.techelevator.tenmo.model.UserDTO;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -30,6 +31,18 @@ public class JdbcUserDao implements UserDao {
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while (results.next()) {
             User registeredUser = mapRowToUser(results);
+            registeredUsers.add(registeredUser);
+        }
+        return registeredUsers;
+    }
+
+    @Override
+    public List<UserDTO> findAllExceptCurrentUser(int userId) {
+        List<UserDTO> registeredUsers = new ArrayList<>();
+        String sql = "SELECT * FROM tenmo_user WHERE user_id != ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+        while (results.next()) {
+            UserDTO registeredUser = mapRowToUserDTO(results);
             registeredUsers.add(registeredUser);
         }
         return registeredUsers;
@@ -99,4 +112,10 @@ public class JdbcUserDao implements UserDao {
             user.setAuthorities("USER");
             return user;
         }
+    private UserDTO mapRowToUserDTO (SqlRowSet rs){
+        UserDTO user = new UserDTO();
+        user.setUserId(rs.getInt("user_id"));
+        user.setName(rs.getString("username"));
+        return user;
+    }
     }
