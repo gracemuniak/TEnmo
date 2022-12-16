@@ -33,20 +33,21 @@ public class JdbcTransferDao implements TransferDao{
     public Transfer createTransfer(Transfer transfer) {
         String sql = "INSERT INTO transfer (user_from, user_to, amount, transfer_status) VALUES (?, ?, ?, 'Pending') " +
                 "RETURNING transfer_id ";
-//        Transfer newTransfer = null;
         Integer transferId = jdbcTemplate.queryForObject(sql, Integer.class, transfer.getUserFrom(), transfer.getUserTo(), transfer.getAmount());
-//        newTransfer.setAmount(amount);
-//        newTransfer.setUserFrom(userFrom);
-//        newTransfer.setUserTo(userTo);
-//        newTransfer.setTransferId(sql);
-//        Integer newTransferId = jdbcTemplate.queryForObject(sql, Integer.class);
         transfer.setTransferId(transferId);
-        return transfer;
-    }
+        BigDecimal amount = transfer.getAmount();
+        String sqlBalance = "SELECT balance FROM account WHERE user_id = ?";
+        BigDecimal balance = jdbcTemplate.queryForObject(sqlBalance, BigDecimal.class, transfer.getUserFrom());
+        if (balance.compareTo(amount) == 1) {
 
+            return transfer;
+        } else
+        return null;
+    }
     @Override
     public Transfer makeNewTransfer(Transfer transfer) {
-
+        String sqlTransferTO = "UPDATE account SET balance = balance + ? WHERE user_id = ? RETURNING account";
+        String sqlTransferFrom = "UPDATE account SET balance = balance - ? WHERE user_id = ? RETURNING account";
         return null;
     }
 

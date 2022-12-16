@@ -39,6 +39,10 @@ public class TransferController {
         return transferDao.createTransfer(transfer);
     }
 
+    @RequestMapping(value = "/transfer/amount", method = RequestMethod.PUT)
+    public Transfer makeNewTransfer(@RequestBody Transfer transfer) {
+        return transferDao.makeNewTransfer(transfer);
+    }
 
 
 }
