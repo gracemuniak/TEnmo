@@ -20,6 +20,30 @@ public class JdbcTransferDao implements TransferDao{
     public JdbcTransferDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+    @Override
+    public List<Transfer> listUsersTransfers(int id, int id1 ){
+        List<Transfer> transferList = new ArrayList<>();
+        String sql = "SELECT * FROM transfer WHERE user_to = ? OR user_from = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id, id1);
+        while (results.next()){
+            Transfer transfer = mapToRowTransfer(results);
+            transferList.add(transfer);
+        }
+        return transferList;
+    }
+
+    @Override
+    public List<Transfer> friendTransfers(int id) {
+        List<Transfer> friendTransferList = new ArrayList<>();
+        String sql = "SELECT * FROM transfer WHERE transfer_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+        while (results.next()){
+            Transfer transfer = mapToRowTransfer(results);
+            friendTransferList.add(transfer);
+        }
+
+        return friendTransferList;
+    }
 
     @Override
     public boolean fundsAvailable(BigDecimal amount, BigDecimal balance) {
@@ -55,25 +79,19 @@ public class JdbcTransferDao implements TransferDao{
         String sqlGetToBalance = "SELECT balance FROM account WHERE user_id = ?";
         BigDecimal balanceTo = jdbcTemplate.queryForObject(sqlGetToBalance, BigDecimal.class, transfer.getUserTo());
         BigDecimal toBalance = new BigDecimal((String.valueOf(balanceTo.add(transfer.getAmount()))));
-        BigDecimal finalBalance = balanceFromDB.subtract(fromBalance);
         System.out.println(fromBalance.compareTo(BigDecimal.valueOf(0)));
         if(fromBalance.compareTo(BigDecimal.valueOf(0)) == 1) {
             String sqlTransferTO = "UPDATE account SET balance = ? WHERE user_id = ?";
             jdbcTemplate.update(sqlTransferTO, fromBalance, transfer.getUserFrom());
             String sqlTransferFrom = "UPDATE account SET balance = ? WHERE user_id = ?";
             jdbcTemplate.update(sqlTransferFrom, toBalance, transfer.getUserTo());
-//            String sqlTransferApproved = "UPDATE transfer SET transfer_status = 'Approved' WHERE transfer_id = ?";
-//            jdbcTemplate.update(sqlTransferApproved, transfer.getTransferId());
+
             transfer.setTransferStatus("Approved");
             createTransfer(transfer);
         } else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You don't have enough money!");
         }
-//        if(finalBalance.compareTo(BigDecimal.valueOf(0)) == -1) {
-//            String sqlStatusUpdate = "Update transfer SET transfer_status = 'Rejected' WHERE transfer_id = ?";
-//            jdbcTemplate.update(sqlStatusUpdate, transfer.getTransferId());
-//            return null;
-//        }
+
         return transfer;
     }
 
@@ -82,7 +100,7 @@ public class JdbcTransferDao implements TransferDao{
         Transfer transfer = new Transfer();
         transfer.setTransferId(response.getInt("transfer_id"));
         transfer.setUserFrom(response.getInt("user_from"));
-        transfer.setUserTo(response.getInt("transfer_to"));
+        transfer.setUserTo(response.getInt("user_to"));
         transfer.setAmount(response.getBigDecimal("amount"));
         transfer.setTransferStatus(response.getString("transfer_status"));
         return transfer;

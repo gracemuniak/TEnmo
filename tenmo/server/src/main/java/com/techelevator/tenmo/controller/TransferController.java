@@ -23,6 +23,7 @@ public class TransferController {
     private AccountDao accountDao;
     private Transfer transfer = new Transfer();
 
+
     public TransferController(UserDao userDao, TransferDao transferDao, AccountDao accountDao) {
         this.userDao = userDao;
         this.transferDao = transferDao;
@@ -33,16 +34,21 @@ public class TransferController {
         return userDao.findAllExceptCurrentUser(userDao.findIdByUsername(principal.getName()));
     }
 
-
-//    @RequestMapping(value = "/transfer/amount", method = RequestMethod.POST)
-//    public Transfer createTransfer(@RequestBody Transfer transfer) {
-//        return transferDao.createTransfer(transfer);
-//    }
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/transfer/amount", method = RequestMethod.POST)
     public Transfer makeNewTransfer(@RequestBody Transfer transfer) {
         return transferDao.makeNewTransfer(transfer);
     }
 
+    @RequestMapping(value = "/transfer/transferlist", method = RequestMethod.GET)
+    public List<Transfer> transferList(Principal principal) {
+        int id = userDao.findIdByUsername(principal.getName());
+        int id1 = id;
+        return transferDao.listUsersTransfers(id, id1);
+    }
 
+    @RequestMapping(value = "transfer/{id}", method = RequestMethod.GET)
+    public List<Transfer> friendTransferList(@PathVariable int id) {
+        return transferDao.friendTransfers(id);
+    }
 }
