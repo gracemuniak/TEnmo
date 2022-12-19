@@ -33,13 +33,13 @@ public class TransferController {
         return userDao.findAllExceptCurrentUser(userDao.findIdByUsername(principal.getName()));
     }
 
+
+//    @RequestMapping(value = "/transfer/amount", method = RequestMethod.POST)
+//    public Transfer createTransfer(@RequestBody Transfer transfer) {
+//        return transferDao.createTransfer(transfer);
+//    }
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/transfer/amount", method = RequestMethod.POST)
-    public Transfer createTransfer(@RequestBody Transfer transfer) {
-        return transferDao.createTransfer(transfer);
-    }
-
-    @RequestMapping(value = "/transfer/amount", method = RequestMethod.PUT)
     public Transfer makeNewTransfer(@RequestBody Transfer transfer) {
         return transferDao.makeNewTransfer(transfer);
     }
