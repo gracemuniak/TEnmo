@@ -7,12 +7,6 @@ import java.util.List;
 
 public interface AccountDao {
 
-    List<Account> findAll();
-
-    Account findByUserId(int userId);
-
-    BigDecimal returnBalance(int userId);
-
     BigDecimal getBalance(int accountId);
 
     int getAccountId(int userId);

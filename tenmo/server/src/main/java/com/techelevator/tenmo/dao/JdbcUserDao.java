@@ -25,18 +25,6 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public List<User> findAllRegisteredUsers() {
-        List<User> registeredUsers = new ArrayList<>();
-        String sql = "SELECT * FROM account WHERE user_id != ?";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-        while (results.next()) {
-            User registeredUser = mapRowToUser(results);
-            registeredUsers.add(registeredUser);
-        }
-        return registeredUsers;
-    }
-
-    @Override
     public List<UserDTO> findAllExceptCurrentUser(int userId) {
         List<UserDTO> registeredUsers = new ArrayList<>();
         String sql = "SELECT * FROM tenmo_user WHERE user_id != ?";

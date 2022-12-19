@@ -31,7 +31,6 @@ public class JdbcTransferDao implements TransferDao{
         }
         return transferList;
     }
-
     @Override
     public List<Transfer> friendTransfers(int id) {
         List<Transfer> friendTransferList = new ArrayList<>();
@@ -41,18 +40,7 @@ public class JdbcTransferDao implements TransferDao{
             Transfer transfer = mapToRowTransfer(results);
             friendTransferList.add(transfer);
         }
-
         return friendTransferList;
-    }
-
-    @Override
-    public boolean fundsAvailable(BigDecimal amount, BigDecimal balance) {
-        return false;
-    }
-
-    @Override
-    public BigDecimal receiveBalance(BigDecimal amount, int userTo) {
-        return null;
     }
 
     @Override
@@ -66,7 +54,6 @@ public class JdbcTransferDao implements TransferDao{
         String sqlBalance = "SELECT balance FROM account WHERE user_id = ?";
         BigDecimal balance = jdbcTemplate.queryForObject(sqlBalance, BigDecimal.class, transfer.getUserFrom());
         if (balance.compareTo(amount) == 1) {
-
             return transfer;
         } else
         return null;
@@ -91,10 +78,8 @@ public class JdbcTransferDao implements TransferDao{
         } else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You don't have enough money!");
         }
-
         return transfer;
     }
-
 
     private Transfer mapToRowTransfer(SqlRowSet response) {
         Transfer transfer = new Transfer();

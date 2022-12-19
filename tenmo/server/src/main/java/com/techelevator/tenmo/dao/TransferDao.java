@@ -13,9 +13,4 @@ public interface TransferDao {
     Transfer createTransfer(Transfer transfer);
 
     Transfer makeNewTransfer(Transfer transfer);
-
-    boolean fundsAvailable(BigDecimal amount, BigDecimal balance);
-
-    BigDecimal receiveBalance(BigDecimal amount, int userTo);
-
 }

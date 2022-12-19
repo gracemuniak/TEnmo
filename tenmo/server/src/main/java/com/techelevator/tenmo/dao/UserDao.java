@@ -11,8 +11,6 @@ public interface UserDao {
 
     User findByUsername(String username);
 
-    List<User> findAllRegisteredUsers();
-
     List<UserDTO> findAllExceptCurrentUser(int userId);
 
     int findIdByUsername(String username);
